@@ -22,6 +22,7 @@ jobs:
           repository: 1-PF/AIM_SeleniumTests
           path: selenium-tests
           token: ${{github.token}}
+          ref: master
 
       - name: Trigger selenium tests
         run: |
