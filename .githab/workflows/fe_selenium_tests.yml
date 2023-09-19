@@ -1,0 +1,45 @@
+name: AIM selenium testing
+
+on:
+  workflow_call:
+    inputs:
+      url:
+        required: true
+        type: string
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Java 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Checkout repository with tests
+        uses: actions/checkout@v2
+        with:
+          repository: 1-PF/AIM_SeleniumTests
+          token: ${{ secrets.PAT_TOKEN_SELENIUM }}
+          path: selenium-tests
+
+      - name: Trigger selenium tests
+        run: |
+          cd selenium-tests
+          mvn clean test -Durl="${{inputs.url}}" -DAIM_TEST_USER="${{secrets.AIM_TEST_USER}}" -DAIM_TEST_USER_PASSWORD="${{secrets.AIM_TEST_USER_PASSWORD}}" -Dsurefire.useFile=false
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: selenium-tests/target/surefire-reports/
+
+      - name: Analyze test results
+        run: |
+          test_failures=$(find selenium-tests/target/surefire-reports/ -name "*.xml" -type f -exec grep -l "<failure" {} \;)
+          if [ -n "$test_failures" ]; then
+            echo "Tests failed"
+            exit 1
+          else
+            echo "All tests passed"
+          fi
