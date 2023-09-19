@@ -6,6 +6,10 @@ on:
       url:
         required: true
         type: string
+    secrets:
+      token:
+        type: string
+        required: true
 
 jobs:
   run-tests:
@@ -21,7 +25,7 @@ jobs:
         with:
           repository: 1-PF/AIM_SeleniumTests
           path: selenium-tests
-          token: ${{github.token}}
+          token: ${{secrets.token}}
           ref: master
 
       - name: Trigger selenium tests
