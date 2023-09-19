@@ -8,7 +8,6 @@ on:
         type: string
     secrets:
       token:
-        type: string
         required: true
 
 jobs:
