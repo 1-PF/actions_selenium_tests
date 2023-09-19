@@ -17,10 +17,11 @@ jobs:
           java-version: 11
 
       - name: Checkout repository with tests
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: 1-PF/AIM_SeleniumTests
           path: selenium-tests
+          token: ${{github.token}}
 
       - name: Trigger selenium tests
         run: |
