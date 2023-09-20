@@ -23,10 +23,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: 1-PF/AIM_SeleniumTests
+          token: ${{ secrets.PAT_TOKEN_SELENIUM }}
           path: selenium-tests
-          ref: master
-        env:
-          GITHUB_TOKEN: ${{secrets.token}}
 
       - name: Trigger selenium tests
         run: |
